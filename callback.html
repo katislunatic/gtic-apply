@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Logging in...</title>
+  <style>
+    body { background: #1e1c1a; color: #f0ede8; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .msg { text-align: center; }
+    .msg p { color: #8a8278; margin-top: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+<div class="msg">
+  <div id="status">Logging you in...</div>
+  <p>You'll be redirected in a moment.</p>
+</div>
+<script>
+const TUNNEL_URL = 'https://angels-shirt-stopping-guides.trycloudflare.com';
+const code = new URLSearchParams(window.location.search).get('code');
+console.log('Code:', code);
+if (!code) {
+  window.location.href = '/';
+} else {
+  const url = TUNNEL_URL + '/auth/callback?code=' + encodeURIComponent(code);
+  console.log('Fetching:', url);
+  fetch(url)
+    .then(r => { console.log('Status:', r.status); return r.json(); })
+    .then(data => {
+      console.log('Data:', data);
+      if (data.token) {
+        window.location.href = '/?token=' + data.token;
+      } else {
+        document.getElementById('status').textContent = 'Login failed: ' + JSON.stringify(data);
+      }
+    })
+    .catch(e => {
+      console.error('Error:', e);
+      document.getElementById('status').textContent = 'Error: ' + e.message;
+    });
+}
+</script>
+</body>
+</html>
