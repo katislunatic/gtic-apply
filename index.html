@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GTIC Apply</title>
+<link rel="icon" type="image/png" href="gtic-logo.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#e8473a;
+  --red-light:#fdf1f0;
+  --red-mid:#f5c4c0;
+  --blue:#3a8fe8;
+  --blue-light:#eef5fd;
+  --white:#f2f1ef;
+  --gray-50:#eceae7;
+  --gray-100:#e4e2de;
+  --gray-200:#e2e5eb;
+  --gray-300:#c8cdd7;
+  --gray-400:#9ba3b0;
+  --gray-600:#5c6470;
+  --gray-900:#111318;
+  --discord:#5865f2;
+  --radius:12px;
+  --radius-sm:8px;
+}
+body{font-family:'Figtree',sans-serif;background:#1e1c1a;color:var(--gray-900);min-height:100vh;display:flex;flex-direction:column}
+
+/* PAGES */
+.page{display:none;flex:1}
+.page.active{display:flex}
+
+/* ─── LOGIN ─── */
+#page-login{align-items:center;justify-content:center;padding:24px;min-height:100vh;background:#1e1c1a}
+
+/* subtle diagonal stripe bg */
+#page-login::before{
+  content:'';position:fixed;inset:0;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 40px,
+    rgba(232,71,58,0.04) 40px,
+    rgba(232,71,58,0.04) 41px
+  );
+  pointer-events:none;
+}
+
+.login-card{
+  position:relative;z-index:1;
+  background:#2a2724;
+  border:1px solid #3d3a36;
+  border-radius:20px;
+  padding:48px 44px 44px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3), 0 1px 4px rgba(0,0,0,0.2);
+}
+.login-logo{
+  width:96px;height:96px;border-radius:50%;
+  object-fit:cover;
+  margin:0 auto 24px;
+  display:block;
+  border:3px solid var(--gray-100);
+}
+.login-card h1{font-size:26px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#f0ede8}
+.login-tagline{font-size:14px;color:#8a8278;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em}
+.login-card p{font-size:15px;color:#a09890;margin-bottom:36px;line-height:1.6}
+
+.btn-discord{
+  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  background:var(--discord);color:#fff;
+  font-family:'Figtree',sans-serif;font-size:15px;font-weight:700;
+  padding:14px 20px;border-radius:var(--radius);border:none;cursor:pointer;
+  transition:background 0.15s,transform 0.1s,box-shadow 0.15s;
+  box-shadow:0 2px 8px rgba(88,101,242,0.35);
+}
+.btn-discord:hover{background:#4752c4;transform:translateY(-2px);box-shadow:0 6px 16px rgba(88,101,242,0.4)}
+.btn-discord:active{transform:translateY(0)}
+
+.login-note{margin-top:16px;font-size:12px;color:#6b6560}
+.login-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#6b6560;font-size:12px}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#3d3a36}
+
+.login-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--gray-100);color:var(--gray-600);
+  font-size:12px;font-weight:600;padding:5px 10px;border-radius:20px;
+}
+.badge svg{width:12px;height:12px;flex-shrink:0}
+.badge.red{background:var(--red-light);color:var(--red)}
+.badge.blue{background:var(--blue-light);color:var(--blue)}
+
+/* ─── APP ─── */
+#page-app{flex-direction:column;position:relative;}
+#page-app::before{
+  content:'';position:fixed;inset:0;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 40px,
+    rgba(232,71,58,0.04) 40px,
+    rgba(232,71,58,0.04) 41px
+  );
+  pointer-events:none;z-index:0;
+}
+#page-app .app-header,#page-app .app-body{position:relative;z-index:1;}
+
+.app-header{
+  background:#2a2724;
+  border-bottom:1px solid #3d3a36;
+  padding:0 24px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+  position:sticky;top:0;z-index:10;
+}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-logo{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.header-name{font-size:15px;font-weight:800;letter-spacing:-0.01em;color:#f0ede8}
+.header-tag{font-size:11px;font-weight:600;background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:20px;letter-spacing:0.04em;text-transform:uppercase}
+.header-user{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#a09890}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+.app-body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:36px 24px 64px}
+
+.app-card{
+  background:#2a2724;
+  border:1px solid #3d3a36;
+  border-radius:20px;
+  width:100%;max-width:580px;
+  overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+
+/* card top accent bar */
+.card-accent{height:4px;background:linear-gradient(90deg,var(--red) 0%,var(--blue) 100%)}
+
+.step{display:none}
+.step.active{display:block}
+
+/* ROLE LIST */
+.step-header{padding:28px 28px 20px}
+.step-header h2{font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#f0ede8}
+.step-header p{font-size:14px;color:#8a8278}
+
+.role-list{padding:0 16px 20px;display:flex;flex-direction:column;gap:3px}
+.role-btn{
+  display:flex;align-items:center;gap:14px;
+  padding:13px 14px;border-radius:var(--radius-sm);
+  border:none;background:none;cursor:pointer;width:100%;text-align:left;
+  transition:background 0.1s;font-family:'Figtree',sans-serif;
+}
+.role-btn:hover{background:#332f2b}
+.role-btn:hover .role-btn-icon{background:#3d3a36}
+.role-btn:hover .role-btn-icon svg{color:var(--red)}
+.role-btn-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:#3d3a36;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background 0.15s;
+}
+.role-btn-icon svg{width:18px;height:18px;color:#a09890;transition:color 0.15s}
+.role-btn-body{flex:1}
+.role-btn-name{font-size:14px;font-weight:700;margin-bottom:2px;color:#f0ede8}
+.role-btn-desc{font-size:12px;color:#6b6560}
+.role-btn-arrow{color:#4a4642;flex-shrink:0}
+.role-btn-arrow svg{width:16px;height:16px}
+
+.role-divider{height:1px;background:#3d3a36;margin:4px 14px}
+
+/* FORM */
+.form-top{
+  padding:22px 24px 0;
+  display:flex;align-items:center;gap:10px;margin-bottom:24px;
+  border-bottom:1px solid #3d3a36;padding-bottom:20px;
+}
+.back-btn{
+  background:#3d3a36;border:none;cursor:pointer;
+  color:#a09890;width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.1s,color 0.1s;flex-shrink:0;
+}
+.back-btn:hover{background:#4a4642;color:#f0ede8}
+.back-btn svg{width:16px;height:16px}
+.form-top h2{font-size:18px;font-weight:800;letter-spacing:-0.01em;color:#f0ede8}
+.role-chip{
+  margin-left:auto;flex-shrink:0;
+  background:var(--red-light);color:var(--red);
+  font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+}
+
+.form-fields{padding:0 24px;display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700;color:#f0ede8}
+.field .hint{font-size:12px;color:#6b6560;margin-top:-2px}
+
+input[type=text],input[type=url],textarea,select{
+  font-family:'Figtree',sans-serif;font-size:14px;color:#f0ede8;
+  background:#332f2b;border:1.5px solid #4a4642;
+  border-radius:var(--radius-sm);padding:11px 14px;width:100%;
+  outline:none;transition:border-color 0.15s,box-shadow 0.15s;resize:vertical;
+  font-weight:500;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(58,143,232,0.12)}
+select{
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ba3b0' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
+
+.radio-group{display:flex;flex-direction:column;gap:6px}
+.radio-opt{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;border:1.5px solid #4a4642;
+  border-radius:var(--radius-sm);cursor:pointer;font-size:14px;font-weight:500;color:#d0cdc8;
+  transition:border-color 0.12s,background 0.12s;
+}
+.radio-opt:hover{border-color:#5a5652;background:#332f2b}
+textarea{padding-bottom:22px!important;}
+.radio-opt input:checked + span{color:var(--blue);font-weight:600}
+
+.char-row{display:flex;justify-content:flex-end;font-size:11px;color:#6b6560;font-weight:600;margin-top:-20px;margin-right:8px;pointer-events:none;position:relative;z-index:1;}
+
+.discord-prefill{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;
+  background:#332f2b;border:1.5px solid #4a4642;
+  border-radius:var(--radius-sm);font-size:14px;color:#a09890;font-weight:500;
+}
+.discord-prefill .mini-avatar{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.verified-check{margin-left:auto;color:var(--blue)}
+.verified-check svg{width:16px;height:16px}
+
+.form-footer{
+  padding:24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-top:1px solid #3d3a36;margin-top:28px;
+}
+.form-note{font-size:12px;color:#6b6560;line-height:1.5;max-width:220px;font-weight:500}
+
+.btn-submit{
+  display:flex;align-items:center;gap:8px;
+  background:var(--red);color:#fff;
+  font-family:'Figtree',sans-serif;font-size:14px;font-weight:700;
+  padding:12px 22px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+  transition:background 0.15s,transform 0.1s,box-shadow 0.15s,opacity 0.15s;
+  white-space:nowrap;box-shadow:0 2px 8px rgba(232,71,58,0.35);
+}
+.btn-submit:hover{background:#d03a2e;transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,71,58,0.4)}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-submit svg{width:16px;height:16px}
+
+/* SUCCESS */
+#page-success{align-items:center;justify-content:center;padding:24px;background:#1e1c1a}
+.success-card{
+  background:#2a2724;border:1px solid #3d3a36;border-radius:20px;
+  padding:52px 44px;max-width:420px;width:100%;text-align:center;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+.success-ring{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--red),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  box-shadow:0 4px 16px rgba(232,71,58,0.3);
+}
+.success-ring svg{width:32px;height:32px;color:#fff}
+.success-card h2{font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px;color:#f0ede8}
+.success-card p{font-size:14px;color:#8a8278;line-height:1.7;margin-bottom:32px}
+.btn-again{
+  background:none;border:1.5px solid #4a4642;
+  font-family:'Figtree',sans-serif;font-size:14px;font-weight:700;
+  color:#a09890;padding:11px 22px;border-radius:var(--radius-sm);
+  cursor:pointer;transition:border-color 0.15s,color 0.15s,background 0.15s;
+}
+.btn-again:hover{border-color:#5a5652;color:#f0ede8;background:#332f2b}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.3s ease both}
+</style>
+</head>
+<body>
+
+<!-- ─── LOGIN ─── -->
+<div id="page-login" class="page">
+  <div class="login-card fade-up">
+    <img src="gtic-logo.png" class="login-logo" alt="GTIC Logo"/>
+    <p class="login-tagline">Gorilla Tag Intermediate COMP</p>
+    <h1>Applications</h1>
+    <p>Connect your Discord account to apply for a position on the GTIC team.</p>
+
+    <a id="discord-login-btn" class="btn-discord" href="https://discord.com/oauth2/authorize?client_id=1487266734766293133&response_type=code&redirect_uri=https%3A%2F%2Fgtic-apply.netlify.app%2Fcallback&scope=identify">
+      <!-- Proper Discord SVG mark -->
+      <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+      </svg>
+      Continue with Discord
+    </a>
+
+    <div class="login-divider">Open positions</div>
+    <div class="login-badges">
+      <span class="badge red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Applications open
+      </span>
+      <span class="badge blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        7 positions
+      </span>
+    </div>
+    <p class="login-note" style="margin-top:20px">We only use your Discord username and ID.</p>
+  </div>
+</div>
+
+<!-- ─── APP ─── -->
+<div id="page-app" class="page">
+  <div class="app-header">
+    <div class="header-brand">
+      <img src="gtic-logo.png" class="header-logo" alt="GTIC"/>
+      <span class="header-name">Gorilla Tag Intermediate COMP</span>
+    </div>
+    <div class="header-user">
+      <div id="hdr-av" style="width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;"></div>
+      <div style="display:flex;flex-direction:column;line-height:1.2;">
+        <span id="hdr-displayname" style="font-size:13px;font-weight:700;color:#f0ede8;"></span>
+        <span id="hdr-name" style="font-size:11px;color:#8a8278;"></span>
+      </div>
+      <button onclick="doLogout()" style="background:none;border:1px solid #3d3a36;border-radius:6px;padding:3px 9px;font-size:12px;color:#8a8278;cursor:pointer;margin-left:6px;font-family:inherit;transition:color 0.2s;" onmouseover="this.style.color='#f0ede8'" onmouseout="this.style.color='#8a8278'">Logout</button>
+    </div>
+  </div>
+  <div class="app-body">
+    <div class="app-card fade-up">
+      <div class="card-accent"></div>
+
+      <!-- Step 1: role -->
+      <div id="step-role" class="step active">
+        <div class="step-header">
+          <h2>Choose a position</h2>
+          <p>Select the role you'd like to apply for.</p>
+        </div>
+        <div class="role-list" id="role-list">
+
+          <button class="role-btn" onclick="pickRole('Caster')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Caster</div><div class="role-btn-desc">Lead play-by-play match coverage</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('Referee')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Referee</div><div class="role-btn-desc">Oversee matches and enforce the ruleset</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('Commentator')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Commentator</div><div class="role-btn-desc">Provide color commentary alongside casters</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('League Manager')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">League Manager</div><div class="role-btn-desc">Coordinate scheduling and team logistics</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('Trial Moderator')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Trial Moderator</div><div class="role-btn-desc">Handle disputes and maintain standards</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('Graphic Designer')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/><path d="M5 12h14"/><path d="M5 17h14"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Graphic Designer</div><div class="role-btn-desc">Create assets, overlays, and branding</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+          <div class="role-divider"></div>
+
+          <button class="role-btn" onclick="pickRole('Media Team')">
+            <div class="role-btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+            <div class="role-btn-body"><div class="role-btn-name">Media Team</div><div class="role-btn-desc">Produce highlights and social content</div></div>
+            <div class="role-btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Step 2: form -->
+      <div id="step-form" class="step">
+        <div class="form-top">
+          <button class="back-btn" onclick="goBack()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <h2 id="form-title"></h2>
+          <span class="role-chip" id="form-chip"></span>
+        </div>
+        <div class="form-fields" id="form-fields"></div>
+        <div class="form-footer">
+          <p class="form-note">Your Discord account will be linked to this application.</p>
+          <button class="btn-submit" id="btn-submit" onclick="submitApp()">
+            Submit
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ─── SUCCESS ─── -->
+<div id="page-success" class="page">
+  <div class="success-card fade-up">
+    <div class="success-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Application sent!</h2>
+    <p>Your application has been posted to the GTIC staff channel. You'll receive a Discord DM once the team has made a decision — usually within a few days.</p>
+    <button class="btn-again" onclick="applyAgain()">Apply for another role</button>
+  </div>
+</div>
+
+<script>
+const TUNNEL_URL='https://angels-shirt-stopping-guides.trycloudflare.com';
+const OAUTH_URL='https://discord.com/oauth2/authorize?client_id=1487266734766293133&response_type=code&redirect_uri=https%3A%2F%2Fgtic-apply.netlify.app%2Fcallback&scope=identify';
+
+let currentUser=null;
+
+async function initAuth(){
+  const params=new URLSearchParams(window.location.search);
+  const token=params.get('token');
+  if(token){
+    localStorage.setItem('gtic_token',token);
+    window.history.replaceState({},document.title,'/');
+  }
+  const stored=localStorage.getItem('gtic_token');
+  if(stored){
+    try{
+      const res=await fetch(TUNNEL_URL+'/auth/user',{headers:{'Authorization':'Bearer '+stored}});
+      if(res.ok){
+        currentUser=await res.json();
+        const av=document.getElementById('hdr-av');
+        if(currentUser.avatarUrl){av.innerHTML='<img src="'+currentUser.avatarUrl+'" style="width:100%;height:100%;object-fit:cover;"/>';}
+        else{av.textContent=currentUser.initials;}
+        document.getElementById('hdr-displayname').textContent=currentUser.displayName||currentUser.username;
+        document.getElementById('hdr-name').textContent=currentUser.username;
+        show('page-app');
+        return;
+      }
+    }catch(e){}
+    localStorage.removeItem('gtic_token');
+  }
+  document.querySelector('.btn-discord').href=OAUTH_URL;
+  show('page-login');
+}
+
+function doLogout(){
+  localStorage.removeItem('gtic_token');
+  window.location.reload();
+}
+
+window.addEventListener('DOMContentLoaded',initAuth);
+
+const Q={
+  'Caster':[
+    {id:'castmod',label:'What Casting Mod Do You Use?',type:'textarea',max:300},
+    {id:'obs',label:'Do You Know How to Use Scenes In OBS Studio?',type:'radio',opts:['Yes','No','Somewhat']},
+    {id:'specs',label:'What Are The Specs On Your PC? And Are You Able To Cast With Them?',type:'textarea',max:400},
+    {id:'wifi',label:'What is Your Wi-Fi Speed (put upload and download speed)',type:'text',ph:'e.g. 100mbps down / 20mbps up',link:'https://www.speedtest.net/'},
+    {id:'leagues',label:'What Other Leagues/Teams Do You Cast In?',type:'textarea',max:300},
+    {id:'vod',label:'Provide A Video of You Casting via link',type:'url',ph:'https://youtube.com/...'},
+    {id:'agreement',label:'By participating as a GTIC Caster, you agree that all assets provided by GTIC are to be used exclusively for official GTIC events. Use outside of approved GTIC activities may result in disciplinary action or removal.',type:'radio',opts:['I Agree','I Disagree']},
+  ],
+  'Referee':[
+    {id:'teams',label:'What teams/leagues have you been a ref for?',type:'textarea',max:400},
+    {id:'rulebook',label:'Do you know the GTIC rulebook, or are you willing to learn it?',type:'textarea',max:300},
+    {id:'names',label:'How should players have their names set during a match?',type:'textarea',max:300},
+    {id:'roundend',label:'When does the round end?',type:'textarea',max:300},
+    {id:'timing',label:'How should the match be timed?',type:'textarea',max:300},
+    {id:'taggers',label:'Where do the taggers start?',type:'textarea',max:300},
+    {id:'runners',label:'Where do the runners start?',type:'textarea',max:300},
+    {id:'headset',label:'A player says "I need to restart my headset" then leaves the lobby. What do you do?',type:'textarea',max:500},
+    {id:'sub',label:"You're reffing an official match and a team needs to get a sub. The team brings in a player who is not on their team. Do you accept the sub into the match?",type:'textarea',max:500},
+    {id:'leave',label:'If a player leaves and no one knows why, how much time do they get to get back?',type:'textarea',max:300},
+  ],
+  'Commentator':[
+    {id:'mic',label:'What kind of microphone do you have?',type:'textarea',max:300},
+    {id:'exp',label:'Do you have any past experience with commentating games/matches?',type:'textarea',max:400},
+    {id:'callouts',label:'Do you know Gorilla Tag Forest callouts? (e.g., gazebo, stump, death wall, blender, etc.)',type:'textarea',max:400},
+    {id:'competitive',label:'Are you familiar with competitive Gorilla Tag strategies, terms, and mechanics?',type:'textarea',max:400},
+    {id:'vod',label:'Provide a video of you commentating via link (if possible)',type:'url',ph:'https://...'},
+  ],
+  'League Manager':[
+    {id:'exp',label:'Do you have any prior experience managing or organizing a league?',type:'textarea',max:400},
+    {id:'availability',label:'How many days a week would you be online and helping with the league?',type:'textarea',max:200},
+    {id:'skills',label:'What skills do you have that makes you a good fit for League Manager? (e.g., scheduling, organization, attention to detail, etc.)',type:'textarea',max:400},
+    {id:'why',label:"Why do you want to be a League Manager, and what's one thing you'd improve about GTIC?",type:'textarea',max:500},
+    {id:'comfort',label:'How comfortable are you with handling things like match scheduling, standings, and league structure decisions?',type:'textarea',max:400},
+    {id:'feedback',label:'How do you feel about taking direction and feedback from the Board of Directors?',type:'textarea',max:400},
+    {id:'format',label:"If a season format wasn't working well mid-season, how would you approach fixing it?",type:'textarea',max:500},
+  ],
+  'Trial Moderator':[
+    {id:'why',label:'Why do you want to become a Trial Moderator for GTIC?',type:'textarea',max:500},
+    {id:'strengths',label:'What strengths do you have that would make you a good Trial Moderator?',type:'textarea',max:400},
+    {id:'exp',label:'Do you have any previous moderation or staff experience? (If yes, please explain)',type:'textarea',max:400},
+    {id:'activity',label:'How active will you be in the GTIC Discord server? (list your usual activity times and time zone)',type:'textarea',max:300},
+    {id:'rules',label:'Are you familiar with the GTIC server rules and guidelines?',type:'radio',opts:['Yes','No']},
+    {id:'limits',label:'Do you understand that as a Trial Moderator, your powers are limited and that permanent actions (such as bans) must be handled by Admins or MOD?',type:'radio',opts:['Yes','No']},
+    {id:'scenario1',label:'How would you handle a situation where two members are arguing or breaking server rules?',type:'textarea',max:500},
+    {id:'scenario2',label:'How would you respond if another staff member made a decision you disagreed with?',type:'textarea',max:500},
+    {id:'calm',label:'How do you stay calm and professional in stressful situations?',type:'textarea',max:400},
+    {id:'agree',label:'Do you agree to follow all staff guidelines and remain professional while representing GTIC?',type:'radio',opts:['Yes','No']},
+    {id:'extra',label:'Is there anything else you\'d like us to know about you? (optional)',type:'textarea',max:400},
+    {id:'questions',label:'Do you have any questions? (optional)',type:'textarea',max:400},
+  ],
+  'Graphic Designer':[
+    {id:'age',label:'What is your age?',type:'text',ph:'e.g. 16'},
+    {id:'portfolio',label:'Please share examples of your past work (link)',type:'url',ph:'https://...'},
+    {id:'why',label:'Why do you want to be a graphic designer for GTIC?',type:'textarea',max:500},
+    {id:'projects',label:'What types of projects are you most confident in? (e.g., logos, banners, thumbnails, overlays, social media posts)',type:'textarea',max:400},
+    {id:'speed',label:'How quickly can you usually complete a project?',type:'radio',opts:['Within a day','2-3 days','1 Week','Longer','Other']},
+    {id:'agree',label:'Do you agree to follow GTIC rules and work respectfully with staff?',type:'radio',opts:['Yes','No']},
+  ],
+  'Media Team':[
+    {id:'age',label:'What is your age?',type:'text',ph:'e.g. 16'},
+    {id:'tz',label:'Time Zone / Availability — When are you usually available for matches/events?',type:'textarea',max:300},
+    {id:'exp',label:'Do you have experience recording or capturing gameplay/content?',type:'radio',opts:['Yes','No','Somewhat']},
+    {id:'portfolio',label:'Please share examples of any past content you\'ve made or helped capture (Links to clips, highlight reels, TikToks, YouTube videos, etc.)',type:'url',ph:'https://...'},
+    {id:'why',label:'Why do you want to be on the GTIC Media Team?',type:'textarea',max:500},
+    {id:'content',label:'What type of content are you most confident in capturing? (e.g., match highlights, player interviews, behind-the-scenes, b-roll)',type:'textarea',max:400},
+    {id:'collab',label:'Are you comfortable collaborating with editors, graphic designers, and casters to hand off your recordings?',type:'radio',opts:['Yes','No']},
+    {id:'frequency',label:'How often could you realistically capture content for GTIC?',type:'radio',opts:['Every event','A few times a week','Occasionally','Other']},
+    {id:'agree',label:'Do you agree to follow GTIC rules and work respectfully with staff when providing content?',type:'radio',opts:['Yes','No']},
+  ],
+};
+
+function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active')}
+
+function pickRole(role){
+  document.getElementById('form-title').textContent=role;
+  document.getElementById('form-chip').textContent=role.toUpperCase();
+  const c=document.getElementById('form-fields');
+
+  c.innerHTML=`<div class="field"><label>Discord account</label><div class="discord-prefill"><div class="mini-avatar">${currentUser.initials}</div><span>${currentUser.username}</span><span class="verified-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div></div>`;
+
+  (Q[role]||[]).forEach(q=>{
+    let inner='';
+    if(q.type==='textarea') inner=`<textarea id="q_${q.id}" rows="4" maxlength="${q.max||500}" placeholder="${q.ph||'Your answer...'}" oninput="cnt(this,'${q.id}',${q.max||500})"></textarea><div class="char-row"><span id="c_${q.id}">0</span>&nbsp;/&nbsp;${q.max||500}</div>`;
+    else if(q.type==='text') inner=`<input type="text" id="q_${q.id}" placeholder="${q.ph||'Your answer...'}"/>`;
+    else if(q.type==='select') inner=`<select id="q_${q.id}"><option value="">Select...</option>${q.opts.map(o=>`<option>${o}</option>`).join('')}</select>`;
+    else if(q.type==='radio') inner=`<div class="radio-group">${q.opts.map(o=>`<label class="radio-opt"><input type="radio" name="q_${q.id}" value="${o}"/><span>${o}</span></label>`).join('')}</div>`;
+    else if(q.type==='url') inner=`<input type="url" id="q_${q.id}" placeholder="${q.ph||'https://...'}"/>`;
+    c.innerHTML+=`<div class="field"><label>${q.label}${q.link?` <a href="${q.link}" target="_blank" style="color:var(--blue);font-weight:600;font-size:12px;text-decoration:none;">${q.link}</a>`:''}</label>${q.hint?`<span class="hint">${q.hint}</span>`:''} ${inner}</div>`;
+  });
+
+  c.innerHTML+=`<div class="field"><label>Anything else? <span style="color:var(--gray-400);font-weight:500">(optional)</span></label><textarea id="q_extra" rows="3" maxlength="300" oninput="cnt(this,'extra',300)"></textarea><div class="char-row"><span id="c_extra">0</span>&nbsp;/&nbsp;300</div></div>`;
+
+  document.getElementById('step-role').classList.remove('active');
+  document.getElementById('step-form').classList.add('active');
+  window.scrollTo({top:0});
+}
+
+function cnt(el,id,max){const s=document.getElementById('c_'+id);if(s)s.textContent=el.value.length}
+function goBack(){document.getElementById('step-form').classList.remove('active');document.getElementById('step-role').classList.add('active')}
+
+async function submitApp(){
+  const btn=document.getElementById('btn-submit');
+  const role=document.getElementById('form-title').textContent;
+  const answers={};
+  (Q[role]||[]).forEach(q=>{
+    if(q.type==='radio'){
+      const sel=document.querySelector(`input[name="q_${q.id}"]:checked`);
+      answers[q.id]={label:q.label,value:sel?sel.value:'(no answer)'};
+    } else {
+      const el=document.getElementById('q_'+q.id);
+      answers[q.id]={label:q.label,value:el?(el.value.trim()||'(no answer)'):'(no answer)'};
+    }
+  });
+  const extra=document.getElementById('q_extra');
+  if(extra&&extra.value.trim()) answers['extra']={label:'Anything else?',value:extra.value.trim()};
+
+  btn.disabled=true;btn.innerHTML='Submitting...';
+  try{
+    const res=await fetch(TUNNEL_URL+'/apply',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('gtic_token')},
+      body:JSON.stringify({role,answers})
+    });
+    if(res.ok){show('page-success');}
+    else{btn.disabled=false;btn.innerHTML='Submit Application';alert('Something went wrong. Please try again.');}
+  }catch(e){
+    btn.disabled=false;btn.innerHTML='Submit Application';alert('Could not reach the server. Please try again.');
+  }
+}
+
+function applyAgain(){goBack();show('page-app')}
+</script>
+</body>
+</html>
